@@ -2,8 +2,27 @@ import java.util.*;
 
 public class SocialNetwork {
     private ArrayList<SocialNetworkMember> members = new ArrayList<>();
+    private ArrayList<Message> messages = new ArrayList<>();
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
     public void addMember(SocialNetworkMember member) {
         members.add(member);
+    }
+    public void sendMessage(Message message) {
+        int membersGotMessageQuantity = 0;
+        for(SocialNetworkMember receiver: message.getReceiver()) {
+            if (isAbleSendMessage(message.getSender(), receiver)) {
+                membersGotMessageQuantity++;
+                coutSentSuccessfully(message, receiver);
+                messages.add(message);
+            }
+            else {
+                coutSendingFailed(message, receiver);
+            }
+        }
+        System.out.println(membersGotMessageQuantity + " messages was sent");
+        System.out.println();
     }
     private class UnionFind {
         private int[] parents;
@@ -48,7 +67,7 @@ public class SocialNetwork {
             }
         }
     }
-    public boolean isAbleSendMessage(SocialNetworkMember sender, SocialNetworkMember receiver) {
+    private boolean isAbleSendMessage(SocialNetworkMember sender, SocialNetworkMember receiver) {
         int membersQuantity = members.size();
 
         UnionFind uf = new UnionFind(membersQuantity);
@@ -58,5 +77,17 @@ public class SocialNetwork {
             }
         }
         return uf.find(sender.getId()) == uf.find(receiver.getId());
+    }
+
+    private void coutSentSuccessfully(Message message, SocialNetworkMember receiver) {
+        System.out.println("Message was sent from " + message.getSender().getName() + " to " + receiver.getName());
+        System.out.println("Message: " + message.getMessageBody());
+        System.out.println("When: " + message.getSentAt());
+        System.out.println();
+    }
+    private void coutSendingFailed(Message message, SocialNetworkMember receiver) {
+        System.out.println("Message wasn't sent from " + message.getSender().getName() + " to " + receiver.getName());
+        System.out.println("You can't send message to this person");
+        System.out.println();
     }
 }

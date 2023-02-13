@@ -12,6 +12,9 @@ public class SocialNetworkMember {
         return friends;
     }
     private String name;
+    public String getName() {
+        return name;
+    }
 
     public SocialNetworkMember(int[] existingFriends, String newName){
         id = newMemberId;
