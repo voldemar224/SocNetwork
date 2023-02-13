@@ -3,11 +3,11 @@ import java.util.Set;
 
 public class SocialNetworkMember {
     static int newMemberId = 0;
-    private int id;
+    protected int id;
     public int getId() {
         return id;
     }
-    private Set<Integer> friends = new HashSet<>();
+    protected Set<Integer> friends = new HashSet<>();
     public Iterable<Integer> getFriends() {
         return friends;
     }
@@ -39,5 +39,9 @@ public class SocialNetworkMember {
 
     public void addFriend(SocialNetworkMember newFriend) {
         friends.add(newFriend.getId());
+    }
+
+    public int getQuantityFriends() {
+        return friends.size();
     }
 }
